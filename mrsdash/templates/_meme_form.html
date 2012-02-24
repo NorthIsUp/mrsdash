@@ -1,0 +1,61 @@
+<form class="form-horizontal well">
+  <fieldset>
+    <legend>Create your meme</legend>
+
+    {# TOP LINE #}
+    <div class="control-group">
+      <label class="control-label" for="input-topline">Top line:</label>
+      <div class="controls">
+        <input type="text" class="input-xxlarge" id="input-topline">
+      </div>
+    </div>
+
+    {# BOTTOM LINE #}
+    <div class="control-group">
+      <label class="control-label" for="input-bottomline">Bottom line:</label>
+      <div class="controls">
+        <input type="text" class="input-xxlarge" id="input-bottomline">
+      </div>
+    </div>
+
+    {# MEME SLECTOR #}
+    <div class="control-group">
+      <label class="control-label" for="select-memeimage">Select a meme</label>
+      <div class="controls">
+        <select id="select-memeimage">
+          {% for meme_name, v in meme_map|dictsort %}<option>{{ meme_name }}</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<div class="form-horizontal well">
+  <legend>Share your creation</legend>
+  <div class="control-group">
+    <label class="control-label" for="link-disqus">
+      <a class="btn btn-medium btn-primary" href="#"><i class="icon-share"></i> Talk about it:</a>
+    </label>
+    <div class="controls">
+      <span type="text" class="input-xxlarge uneditable-input" id="link-disqus"></span>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="link-direct">
+      <a class="btn btn-medium" href="#"><i class="icon-share"></i> direct link:</a>
+    </label>
+    <div class="controls">
+      <span type="text" class="input-xxlarge uneditable-input" id="link-direct"></span>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="link-short">
+      <a class="btn btn-medium" href="#"><i class="icon-share"></i> Short link:</a>
+    </label>
+    <div class="controls">
+      <span type="text" class="input-xxlarge uneditable-input" id="link-short"></span>
+    </div>
+  </div>
+</div>

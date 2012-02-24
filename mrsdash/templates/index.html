@@ -1,0 +1,36 @@
+{% extends '_base.html' %}
+{% block bodyattr %}id="deploy" class="dashboard" style="background-image:url('/static/images/dash.png',background-repeat: no-repeat)"{% endblock %}
+
+{% block head %}
+    {% include '_head.html' %}
+
+    <title>Deploy Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/screen.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+{% endblock %}
+{% block content %}
+
+{% include '_nav.html' %}
+
+
+<div class="container-fluid">
+    <div id="status"></div>
+    {% for header, dashes in dashboards.iteritems() %}
+    <div class="container-fluid">
+        <a name="{{header|replace(" ", "-")}}"><h3>{{header}} ({{the_time}})</h3></a>
+        <hr />
+        <div class="row">
+            {% for d in dashes -%}
+            <div class="span{{d['span']}}-fluid">
+                <h4>{{d['title']}}</h4>
+                <a href="{{d['img_src']}}"><img src="{{d['img_src']}}"></a>{{d['legend']}}
+            </div>
+            {%- endfor %}
+        </div>
+    </div>
+    {%- endfor %}
+</div><!--/.fluid-container-->
+{% endblock %}

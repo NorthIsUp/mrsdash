@@ -1,0 +1,29 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="#">Mrs. Dash</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          {% for k in dashboards %}<li><a href="#{{k|replace(" ", "-")}}">{{k}}</a></li>{% endfor %}
+        </ul>
+        <ul class="nav pull-right">
+          <li>
+            <form id="controls" action="{{current_url}}">
+              <select name="time">
+                {% for key, value in times %}
+                    <option value="{{key}}" {% if key == time %}{{"selected"}}{% endif %}>{{value}}</option>
+                {% endfor %}
+              </select>
+              {# <label><input type="checkbox" name="hide_deploys" value="true" {% if hide_deploys == True %}"checked"{% endif %}> Hide deploys</label> #}
+            </form>
+          </li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
