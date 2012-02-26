@@ -21,6 +21,10 @@ class Series(str):
     def __str__(self):
         return self._applied
 
+    def second_y_axis(self):
+        self.add_raw_function("secondYAxis")
+        return self
+
     # TODO: add functions from http://graphite.readthedocs.org/en/1.0/functions.html
     def add_raw_function(self, function, *args):
         self._add_raw_function(function, *args)
@@ -48,49 +52,49 @@ class Series(str):
 
         return "{func}({inner})".format(func=f_name, inner=inner)
 
-s = Series("foo.bar")
-print s
-s = Series("bar.foo", ("sum", 1))
-print s.apply_functions()
-print s._functions
-
 
 class Graph(object):
-    """docstring for Graphite"""
-    def __init__(self, config, time):
-        super(Graph, self).__init__()
 
-        self._base_url = config['GRAPHITE_BASE_URL']
-        self._deploys = config['GRAPHITE_DEPLOYS']
-        self._hide_grid = False
-        self._hide_legend = False
-        self._line_mode = None
-        self._line_width = None
-        self._series = []
-        self._pie_chart = False
-        self._stacked = False
-        self._time = time
-        self._title = None
-        self._display_title = True
-        self._display_vtitle = False
-        self._vtitle = None
-        self._y_max = None
-        self._y_min = 0
-        self._time_shift = None
-        self._span = 12
-        self._threshold = []
+    def __new__(cls, *args):
+        """Copy constructor"""
+        if len(args) == 1 and isinstance(args[0], cls):
+            return deepcopy(args[0])
+        else:
+            return super(Graph, cls).__new__(cls, *args)
+
+    def __init__(self, *args):
+        if len(args) == 1:
+            pass
+        elif len(args) == 2:
+            config, time = args
+            self._base_url = config['GRAPHITE_BASE_URL']
+            self._deploys = config['GRAPHITE_DEPLOYS']
+            self._hide_grid = False
+            self._hide_legend = False
+            self._line_mode = None
+            self._line_width = None
+            self._series = []
+            self._pie_chart = False
+            self._stacked = False
+            self._time = time
+            self._title = None
+            self._display_title = True
+            self._display_vtitle = False
+            self._vtitle = None
+            self._y_max = None
+            self._y_min = 0
+            self._time_shift = None
+            self._span = 12
+            self._threshold = []
+        else:
+            raise TypeError("__init__() takes either 1 or 2 arguments %d given" % len(args))
 
     # TODO: add a horizontal line method
     @accepts(int, self=True)
     def add_threshold(self, threshold, label=None, color=None):
-        print label, color
         args = ('threshold', filter(lambda x: True if x else False, (label, color)))
-        print args
         self.add_series(threshold, *args)
         return self
-
-    def prototype(self):
-        return deepcopy(self)
 
     # TODO add all methods from http://graphite.readthedocs.org/en/1.0/url-api.html
     @accepts(int, self=True)
@@ -209,7 +213,7 @@ class Graph(object):
             p['vtitle'] = self._vtitle
             p['hideaxes'] = 'false'
 
-        if self._hide_legend and not stand_alone:
+        # if self._hide_legend and not stand_alone:
             p['hideLegend'] = self._hide_legend
 
         if self._hide_grid:

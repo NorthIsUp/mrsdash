@@ -9,7 +9,6 @@ from flask import redirect
 
 from time_helpers import display_time
 from time_helpers import get_times
-from pprint import pprint
 
 app = Flask(__name__)
 
@@ -28,8 +27,6 @@ def charts():
     #DASHES is an orderd dict
 
     dashes = app.config['DASHES'](app, request)
-
-    pprint(dashes)
 
     time = request.args.get('time', '1h')
     hide_deploys = request.args.get('hide_deploys', False)

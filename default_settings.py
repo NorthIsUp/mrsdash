@@ -17,3 +17,21 @@ WERKZEUG_OPTS = {
 
 GRAPHITE_BASE_URL = ''
 GRAPHITE_DEPLOYS = []
+
+
+def DASHES(app, request):
+    """This should return an OrderedDict of the following format:
+    {'heading': [Graph(), ...], ...}"""
+    from mrsdash.graphite import Graph
+    from collections import OrderedDict
+    dashes = OrderedDict()
+
+    config = {
+        'GRAPHITE_BASE_URL': GRAPHITE_BASE_URL,
+        'GRAPHITE_DEPLOYS': GRAPHITE_DEPLOYS
+        }
+
+    dashes['My Stats'] = []
+    dashes['My Stats'].append(Graph('1h', config))
+
+    return dashes
