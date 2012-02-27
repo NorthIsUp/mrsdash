@@ -38,9 +38,7 @@ Needed to cast params as floats in function def (or simply divide by 2.0).
 
 """
 
-import sys
 from functools import wraps
-from itertools import compress
 from logging import getLogger
 logger = getLogger(__name__)
 
