@@ -1,5 +1,4 @@
 Flask
-gevent
 urllib3
 anyjson
 path.py
