@@ -17,6 +17,7 @@ class Series(str):
             if isinstance(f, basestring):
                 f = (f,)
             self._add_raw_function(*f)
+        self._applied = self.apply_functions()
 
     def __str__(self):
         return self._applied
@@ -55,6 +56,19 @@ class Series(str):
 
 class Graph(object):
 
+    @classmethod
+    def set_config(cls, config):
+        """
+        Set the config for the whole class. This will remove it as a requirement
+        for the init function
+        """
+        assert("GRAPHITE_BASE_URL" in config)
+
+        cls._config = {
+            "GRAPHITE_BASE_URL": config.get("GRAPHITE_BASE_URL"),
+            "GRAPHITE_DEPLOYS": config.get('GRAPHITE_DEPLOYS', [])
+        }
+
     def __new__(cls, *args):
         """Copy constructor"""
         if len(args) == 1 and isinstance(args[0], cls):
@@ -63,12 +77,16 @@ class Graph(object):
             return super(Graph, cls).__new__(cls, *args)
 
     def __init__(self, *args):
-        if len(args) == 1:
+        if len(args) == 1 and isinstance(args[0], self.__class__):
             pass
+        elif len(args) == 1 and isinstance(args[0], basestring):
+            if not hasattr(self.__class__, "_config"):
+                raise AttributeError("You must use Graph.set_config() to use this constructor")
+            self.__init__(self.__class__._config, args[0])
         elif len(args) == 2:
             config, time = args
             self._base_url = config['GRAPHITE_BASE_URL']
-            self._deploys = config['GRAPHITE_DEPLOYS']
+            self._deploys = config.get('GRAPHITE_DEPLOYS', [])
             self._hide_grid = False
             self._hide_legend = False
             self._line_mode = None

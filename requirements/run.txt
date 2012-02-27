@@ -1,5 +1,5 @@
 Flask
 gevent
 urllib3
-yajl
+anyjson
 path.py
