@@ -6,7 +6,7 @@ from copy import deepcopy
 
 
 class Series(str):
-    def __new__(cls, series, *funcs):
+    def __new__(cls, series, *funcs, **kwargs):
         return super(Series, cls).__new__(cls, series)
 
     def __init__(self, series, *funcs):
@@ -22,11 +22,6 @@ class Series(str):
     def __str__(self):
         return self._applied
 
-    def second_y_axis(self):
-        self.add_raw_function("secondYAxis")
-        return self
-
-    # TODO: add functions from http://graphite.readthedocs.org/en/1.0/functions.html
     def add_raw_function(self, function, *args):
         self._add_raw_function(function, *args)
         self._applied = self.apply_functions()
@@ -53,9 +48,48 @@ class Series(str):
 
         return "{func}({inner})".format(func=f_name, inner=inner)
 
+    ## functions! doing these explicitly instead of dynamically
+    def alias(self, alias):
+        self.add_raw_function("alias", alias)
+        return self
+
+    def second_y_axis(self):
+        self.add_raw_function("secondYAxis")
+        return self
+
+    def draw_as_infinite(self):
+        self.add_raw_function("drawAsInfinite")
+        return self
+
+    @accepts(str, self=True)
+    def color(self, color):
+        self.add_raw_function("color", color)
+        return self
+
+    @accepts(int, self=True)
+    def line_width(self, width):
+        self.add_raw_function("lineWidth", width)
+        return self
+
+    # TODO: add the rest of the functions from http://graphite.readthedocs.org/en/1.0/functions.html
+
+
+class Deploy(Series):
+    """A special case for deployments"""
+    def __init__(self, series, *funcs, **kwargs):
+        super(Deploy, self).__init__(series, *funcs)
+
+        name = kwargs.get('name', 'Deploy')
+        color = kwargs.get('color', 'blue')
+        line_width = kwargs.get('line_width', 2)
+
+        self.alias(name)
+        self.draw_as_infinite()
+        self.line_width(line_width)
+        self.color(color)
+
 
 class Graph(object):
-
     @classmethod
     def set_config(cls, config):
         """
@@ -207,8 +241,7 @@ class Graph(object):
     def show_deploys(self, show=True):
         if show:
             for deploy in self._deploys:
-                target = "alias(drawAsInfinite(deploy['target']), 'Deploy: deploy['title']')"
-                self.add_series(target, deploy['color'], True)
+                self.add_series(deploy)
         return self
 
      # Convert Dashboard time period to a value usable by Graphite URLs.

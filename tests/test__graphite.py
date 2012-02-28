@@ -1,15 +1,13 @@
 import unittest2
 
 from mrsdash.graphite import Graph
+from mrsdash.graphite import Deploy
 from mrsdash.graphite import Series
 
 
 class TestGraph(unittest2.TestCase):
     def setUp(self):
         self.config = {'GRAPHITE_BASE_URL': "http://localhost:9090/"}
-
-    def tearDown(self):
-        pass
 
     def test_new_graph(self):
         with self.assertRaises(TypeError):
@@ -34,13 +32,6 @@ class TestGraph(unittest2.TestCase):
 
 
 class TestSeries(unittest2.TestCase):
-    """docstring for Series"""
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
     def test_new_series(self):
         s = Series("foo.bar")
         self.assertEqual("foo.bar", s)
@@ -53,3 +44,23 @@ class TestSeries(unittest2.TestCase):
         s = Series("foo.bar")
         s.add_raw_function("alias", ("badass"))
         self.assertEquals('alias(foo.bar,"badass")', str(s))
+
+
+class TestDeploly(unittest2.TestCase):
+    def test_new_series(self):
+        s = Deploy("foo.bar")
+        se = 'color(lineWidth(drawAsInfinite(alias(foo.bar,"Deploy")),2),"blue")'
+        self.assertEqual(se, str(s))
+        s = Deploy("foo.bar", ("sumSeries"))
+        se = 'color(lineWidth(drawAsInfinite(alias(sumSeries(foo.bar),"Deploy")),2),"blue")'
+        self.assertEqual(se, str(s))
+        s = Deploy("foo.bar", ("alias", "badass"))
+        se = 'color(lineWidth(drawAsInfinite(alias(alias(foo.bar,"badass"),"Deploy")),2),"blue")'
+        self.assertEqual(se, str(s))
+
+    def test_add_raw_function(self):
+        #TODO: should this fail if a function like alias is applied twice?
+        s = Deploy("foo.bar")
+        s.add_raw_function("alias", ("badass"))
+        se = 'alias(color(lineWidth(drawAsInfinite(alias(foo.bar,"Deploy")),2),"blue"),"badass")'
+        self.assertEquals(se, str(s))
