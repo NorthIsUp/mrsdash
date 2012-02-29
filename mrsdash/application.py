@@ -17,11 +17,7 @@ def pre_config(app):
 
 
 def post_config(app):
-    logger.info("starting post_config")
-
-    # make this a normal blueprint registration (fix in scales library)
-    registerStatsHandler(app, __name__, prefix="/iapi/status")
-    logger.info("done with post_config")
+    pass
 
 
 def load_middlewares(app):

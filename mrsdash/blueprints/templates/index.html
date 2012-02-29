@@ -1,14 +1,14 @@
 {% extends '_base.html' %}
-{% block bodyattr %}id="deploy" class="dashboard" style="background-image:url('/static/images/dash.png',background-repeat: no-repeat)"{% endblock %}
+{% block bodyattr %}id="deploy" class="dashboard" style="background-image:url('{{ url_for('mrsdash.blueprints.mrsdash.static', filename='static/images/dash.png') }}',background-repeat: no-repeat)"{% endblock %}
 
 {% block head %}
     {% include '_head.html' %}
 
     <title>Deploy Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="{{SITE_ROOT}}/s/css/screen.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('mrsdash.blueprints.mrsdash.static', filename='css/screen.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-    <script src="{{SITE_ROOT}}/s/js/dashboard.js"></script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="{{ url_for('mrsdash.blueprints.mrsdash.static', filename='js/dashboard.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('mrsdash.blueprints.mrsdash.static', filename='favicon.ico') }}">
 
 {% endblock %}
 {% block content %}
