@@ -4,7 +4,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-__version__ = '0.1.0'
+__version__ = '0.1.3'
 
 tests_require = [
     'nose',
@@ -16,6 +16,7 @@ install_requires = [
     "anyjson",
     "path.py",
     "disqus-flask",
+    "ordereddict",  # for python 2.6
 ]
 
 

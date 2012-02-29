@@ -53,7 +53,7 @@ def DASHES(app, request):
     """This should return an OrderedDict of the following format:
     {'heading': [Graph(), ...], ...}"""
     from mrsdash.lib.graphite import Graph
-    from collections import OrderedDict
+    from ordereddict import OrderedDict
     dashes = OrderedDict()
 
     config = {

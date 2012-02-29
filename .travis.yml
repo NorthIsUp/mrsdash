@@ -1,13 +1,12 @@
-language: python
+language:   python
 python:
-  - "2.6"
-  - "2.7"
+    - "2.6"
+    - "2.7"
   # - "3.1"
   # - "3.2"
-# command to install dependencies
+
 install:
-  # - pip install . --use-mirrors
-  - pip install -r requirements/run.txt --use-mirrors
-  - pip install -r requirements/test.txt --use-mirrors
-# command to run tests
-script: nosetests
+    python setup.py install
+
+script:
+    python setup.py tests
