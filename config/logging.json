@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "verbose": {
+            "format": "g%(thread)d  %(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+        },
+        "medium": {
+            "format": "(%(asctime)s [%(levelname)s] %(module)s) %(message)s"
+        },
+        "simple": {
+            "format": "%(levelname)s %(message)s"
+        }
+    },
+    "filters": {
+    },
+    "handlers": {
+        "null": {
+            "level":"DEBUG",
+            "class":"disqus.flask.logging_handlers.NullHandler"
+        },
+        "console":{
+            "level":"DEBUG",
+            "class":"logging.StreamHandler",
+            "formatter": "medium"
+        }
+    },
+    "loggers": {
+        "flask": {
+            "handlers":["console"],
+            "level":"INFO"
+        },
+        "disqus": {
+            "handlers":["console"],
+            "level":"WARN"
+        },
+        "disqus.flask": {
+            "handlers":["console"],
+            "propagate": false,
+            "level":"DEBUG"
+        },
+        "mrsdash": {
+            "handlers": ["console"],
+            "level": "DEBUG"
+        }
+    }
+}
