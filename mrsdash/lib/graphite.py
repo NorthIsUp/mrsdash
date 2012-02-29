@@ -1,7 +1,7 @@
 from urllib import quote
 from urllib import urlencode
-from time_helpers import parse_time
-from helpers import accepts
+from mrsdash.lib.time_helpers import parse_time
+from mrsdash.lib.helpers import accepts
 from copy import deepcopy
 
 

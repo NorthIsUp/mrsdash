@@ -1,32 +1,27 @@
-from gevent import monkey
-monkey.patch_all()
-
-from flask import Flask
+from __future__ import absolute_import
+from flask.blueprints import Blueprint
 from flask import render_template
 from flask import request
 from flask import url_for
 from flask import redirect
+from flask import current_app
 
-from time_helpers import display_time
-from time_helpers import get_times
+from mrsdash.lib.time_helpers import display_time
+from mrsdash.lib.time_helpers import get_times
 
-app = Flask(__name__)
+from mrsdash.lib.helpers import make_module
 
-app.config.from_object(__name__)
-app.config.from_object('default_settings')
-app.config.from_object('local_settings')
+blueprint = Blueprint(__name__, 'mrsdash')
 
 
-@app.route('/favicon.ico')
+@blueprint.route('/favicon.ico')
 def favicon():
     return redirect('/static/favicon.ico')
 
 
-@app.route("/")
+@blueprint.route("/")
 def charts():
-    #DASHES is an orderd dict
-
-    dashes = app.config['DASHES'](app, request)
+    dashes = current_app.config['DASHES'](current_app, request)
 
     time = request.args.get('time', '1h')
     hide_deploys = request.args.get('hide_deploys', False)
@@ -41,3 +36,13 @@ def charts():
         }
 
     return render_template('index.html', **d)
+
+
+__views_attrs = {
+    'favicon': favicon,
+    'charts': charts,
+    }
+
+views = make_module("views", **__views_attrs)
+
+print views

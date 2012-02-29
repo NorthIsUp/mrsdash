@@ -14,6 +14,29 @@ WERKZEUG_OPTS = {
     'port': int(CANONICAL_PORT)
     }
 
+# Global configuration
+BROWSER_SECRET_KEY = ''
+
+# When behind a load balancer, set CANONICAL_NAME to the value contained in
+# Host headers (e.g. 'www.example.org')
+CANONICAL_NAME = 'localhost'
+LISTEN_HOST = '0.0.0.0'
+
+# When behind a load balancer, set CANONICAL_PORT to the value contained in
+# Host headers (normally it will be '80' in production)
+# 8000 chosen to mesh with gunicorn
+CANONICAL_PORT = '8000'
+
+DEBUG_TOOLBAR = False
+PASSWORD_HASH = ''
+SECRET_KEY = ''
+USE_SSL = False
+
+COOKIE_NAME = 'b'
+COOKIE_PATH = '/'
+
+LOGGING_CONFIG = "config/logging.json"
+LOGGING_DICTCONFIG = ""  # auto generated from path above
 
 GRAPHITE_BASE_URL = ''
 GRAPHITE_DEPLOYS = []
