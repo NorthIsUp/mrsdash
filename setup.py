@@ -4,7 +4,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-__version__ = '0.1.12'
+__version__ = '0.1.0'
 
 tests_require = [
     'nose',
