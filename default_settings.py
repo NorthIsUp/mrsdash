@@ -1,3 +1,10 @@
+import os
+from path import path
+
+LOCAL_SETTINGS_ENVVAR = 'MRSDASH_SETTINGS'
+os.environ[LOCAL_SETTINGS_ENVVAR] = path(__file__).dirname().abspath() / 'local_settings.py'
+
+
 LISTEN_HOST = '0.0.0.0'
 CANONICAL_NAME = LISTEN_HOST
 
@@ -45,7 +52,7 @@ GRAPHITE_DEPLOYS = []
 def DASHES(app, request):
     """This should return an OrderedDict of the following format:
     {'heading': [Graph(), ...], ...}"""
-    from mrsdash.graphite import Graph
+    from mrsdash.lib.graphite import Graph
     from collections import OrderedDict
     dashes = OrderedDict()
 
@@ -55,6 +62,6 @@ def DASHES(app, request):
         }
 
     dashes['My Stats'] = []
-    dashes['My Stats'].append(Graph('1h', config))
+    dashes['My Stats'].append(Graph(config, '1h'))
 
     return dashes

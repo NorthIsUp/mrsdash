@@ -5,9 +5,9 @@
     {% include '_head.html' %}
 
     <title>Deploy Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/screen.css">
+    <link rel="stylesheet" type="text/css" href="{{SITE_ROOT}}/s/css/screen.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-    <script src="/static/js/dashboard.js"></script>
+    <script src="{{SITE_ROOT}}/s/js/dashboard.js"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
 {% endblock %}

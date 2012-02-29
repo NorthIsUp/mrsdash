@@ -1,8 +1,8 @@
 import unittest2
 
-from mrsdash.graphite import Graph
-from mrsdash.graphite import Deploy
-from mrsdash.graphite import Series
+from mrsdash.lib.graphite import Graph
+from mrsdash.lib.graphite import Deploy
+from mrsdash.lib.graphite import Series
 
 
 class TestGraph(unittest2.TestCase):

@@ -32,3 +32,5 @@ _application = create_app("mrsdash", blueprints, bp_path, pre_config, post_confi
 _application = load_middlewares(_application)
 
 application = _application
+
+print application.url_map

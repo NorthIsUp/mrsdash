@@ -1,22 +1,30 @@
 from __future__ import absolute_import
-from flask.blueprints import Blueprint
+from flask import current_app
+from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
-from flask import redirect
-from flask import current_app
-
+from flask.blueprints import Blueprint
+from mrsdash.lib.helpers import make_module
 from mrsdash.lib.time_helpers import display_time
 from mrsdash.lib.time_helpers import get_times
+from path import path
 
-from mrsdash.lib.helpers import make_module
+here = path(__file__).dirname().abspath()
+template_folder = path(here / "templates")
+static_folder = path(here / "static")
 
-blueprint = Blueprint(__name__, 'mrsdash')
+blueprint = Blueprint(
+    __name__,
+    'mrsdash',
+    template_folder=template_folder,
+    static_url_path="/s",
+    static_folder=static_folder)
 
 
 @blueprint.route('/favicon.ico')
 def favicon():
-    return redirect('/static/favicon.ico')
+    return url_for('static', filename='favicon.ico')
 
 
 @blueprint.route("/")
@@ -41,8 +49,8 @@ def charts():
 __views_attrs = {
     'favicon': favicon,
     'charts': charts,
+    'blueprint': blueprint,
+    '__add_to_sys_modules': True,
     }
 
-views = make_module("views", **__views_attrs)
-
-print views
+views = make_module(__name__ + ".views", **__views_attrs)

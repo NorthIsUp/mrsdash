@@ -133,3 +133,22 @@ def info(fname, expected, actual, flag):
           + ("accepts", "returns")[flag] + " (%s), but " % expected\
           + ("was given", "result is")[flag] + " (%s)" % actual
     return msg
+
+
+def make_module(module_name, **attrs):
+    """
+    Returns a newly generated module.
+    """
+    import sys
+    import imp
+
+    module = imp.new_module(module_name)
+
+    if attrs.get('__add_to_sys_modules'):
+        sys.modules[module_name] = module
+        del attrs['__add_to_sys_modules']
+
+    for name, value in attrs.iteritems():
+        setattr(module, name, value)
+
+    return module
