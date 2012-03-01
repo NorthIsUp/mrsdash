@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from flask import current_app
-from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
@@ -15,8 +14,8 @@ template_folder = path(here / "templates")
 static_folder = path(here / "static")
 
 blueprint = Blueprint(
-    __name__,
     'mrsdash',
+    __name__,
     template_folder=template_folder,
     static_url_path="/s",
     static_folder=static_folder)
