@@ -48,7 +48,7 @@ def charts():
         'the_time': display_time(time)
         }
 
-    return render_template('index.html', **d)
+    return render_template('dashboard/index.html', **d)
 
 
 # __views_attrs = {

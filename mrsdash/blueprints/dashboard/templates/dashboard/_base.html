@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {% block head %}
-    {% include '_head.html' %}
+    {% include 'dashboard/_head.html' %}
     {% endblock %}
 </head>
 <body {% block bodyattr %}{% endblock %} >
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}
-        {% include '_foot.html' %}
+        {% include 'dashboard/_foot.html' %}
         {% endblock %}
     </div>
 </body>
