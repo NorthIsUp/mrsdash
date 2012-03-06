@@ -1,7 +1,7 @@
 from gevent import monkey
 monkey.patch_all()
 
-import default_settings as ds
+from mrsdash import default_settings as ds
 import logging
 import os
 import signal

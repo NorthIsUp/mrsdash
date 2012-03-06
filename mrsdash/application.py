@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 blueprints = [
-    {'name': 'dashboard', 'url_prefix': '/'},
+    {'name': 'dashboard', 'url_prefix': '/iapi/dashboard'},
 ]
 
 

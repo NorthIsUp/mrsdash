@@ -15,6 +15,7 @@ logger = getLogger(__name__)
 here = path(__file__).dirname().abspath()
 template_folder = path(here / "templates")
 static_folder = path(here / "static")
+print template_folder
 
 print template_folder
 

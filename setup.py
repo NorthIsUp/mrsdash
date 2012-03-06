@@ -4,7 +4,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-__version__ = '0.1.5'
+__version__ = '0.1.7'
 
 tests_require = [
     'nose',
@@ -29,10 +29,19 @@ setup(
     install_requires=install_requires,
     license='Apache License 2.0',
     name='mrsdash',
+    package_data={
+        'mrsdash': [
+            'blueprints/dashboard/templates/*.html',
+            'blueprints/dashboard/static/*']
+        },
+    package_dir={
+        'mrsdash': 'mrsdash'
+        },
     packages=find_packages(exclude=["tests"]),
     test_suite='nose.collector',
     tests_require=tests_require,
     url='https://www.github.com/NorthIsUp/mrsdash',
     version=__version__,
     zip_safe=False,
+
 )
