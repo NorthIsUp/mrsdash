@@ -4,7 +4,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-__version__ = '0.1.7'
+__version__ = '0.1.8'
 
 tests_require = [
     'nose',
@@ -32,7 +32,7 @@ setup(
     package_data={
         'mrsdash': [
             'blueprints/dashboard/templates/*.html',
-            'blueprints/dashboard/static/*']
+            'blueprints/dashboard/static/**.[css|js|ico]']
         },
     package_dir={
         'mrsdash': 'mrsdash'
