@@ -3,8 +3,19 @@
 
 from setuptools import setup
 from setuptools import find_packages
+import fnmatch
+import os
 
-__version__ = '0.1.8'
+
+def better_glob(dir, patterns):
+    matches = []
+    for root, _dirnames, filenames in os.walk(dir):
+        for pat in patterns:
+            for filename in fnmatch.filter(filenames, pat):
+                matches.append(os.path.join(root[len(dir) + 1:], filename))
+    return matches
+
+__version__ = '0.1.10'
 
 tests_require = [
     'nose',
@@ -20,6 +31,8 @@ install_requires = [
 ]
 
 
+print better_glob('mrsdash', ("*.html", "*.css", "*.js", "*.ico"))
+
 setup(
     # long_description=__doc__,
     author='Adam Hitchcock',
@@ -30,9 +43,7 @@ setup(
     license='Apache License 2.0',
     name='mrsdash',
     package_data={
-        'mrsdash': [
-            'blueprints/dashboard/templates/*.html',
-            'blueprints/dashboard/static/**.[css|js|ico]']
+        'mrsdash': better_glob('mrsdash', ("*.html", "*.css", "*.js", "*.ico"))
         },
     package_dir={
         'mrsdash': 'mrsdash'

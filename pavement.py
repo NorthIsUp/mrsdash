@@ -34,7 +34,7 @@ def publish(options):
     sh("python setup.py build")
     sh("python setup.py install")
 
-    VERSION = pkg_resources.get_distribution(options.module).version
+    VERSION = sh("python -c 'import pkg_resources; print pkg_resources.get_distribution(\"%s\").version'" % options.module, capture=True)
     print VERSION
 
     print "creating tag " + VERSION
