@@ -15,7 +15,7 @@ def better_glob(dir, patterns):
                 matches.append(os.path.join(root[len(dir) + 1:], filename))
     return matches
 
-__version__ = '0.1.12'
+__version__ = '0.1.14'
 
 tests_require = [
     'nose',
@@ -31,9 +31,6 @@ install_requires = [
 ]
 
 resources = better_glob('mrsdash', ("*.html", "*.css", "*.js", "*.ico"))
-
-from pprint import pprint
-pprint(resources)
 
 setup(
     # long_description=__doc__,
@@ -53,6 +50,9 @@ setup(
     packages=find_packages(exclude=["tests"]),
     test_suite='nose.collector',
     tests_require=tests_require,
+    setup_requires=[
+        'setuptools-git'
+        ],
     url='https://www.github.com/NorthIsUp/mrsdash',
     version=__version__,
     zip_safe=False,

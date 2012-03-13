@@ -31,8 +31,7 @@ def publish(options):
     if not hasattr(options, 'module'):
         print "module is not an option, it is required"
 
-    sh("python setup.py build")
-    sh("python setup.py install")
+    # sh("python setup.py build")
 
     VERSION = sh("python -c 'import pkg_resources; print pkg_resources.get_distribution(\"%s\").version'" % options.module, capture=True)
     print VERSION
@@ -43,12 +42,12 @@ def publish(options):
     print "pushing tag"
     sh("git push origin " + VERSION)
 
-    manifest = path('MANIFEST')
-    if manifest.exists():
-        print "removing manifest file"
-        manifest.remove()
+    # manifest = path('MANIFEST')
+    # if manifest.exists():
+    #     print "removing manifest file"
+    #     manifest.remove()
 
     print "uploading package."
-    sh("python setup.py sdist upload -r disqus")
+    sh("python setup.py sdist bdist_egg upload -r disqus")
 
     clean()
