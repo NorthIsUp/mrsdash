@@ -15,7 +15,7 @@ def better_glob(dir, patterns):
                 matches.append(os.path.join(root[len(dir) + 1:], filename))
     return matches
 
-__version__ = '0.1.11'
+__version__ = '0.1.12'
 
 tests_require = [
     'nose',
@@ -30,8 +30,10 @@ install_requires = [
     "ordereddict",  # for python 2.6
 ]
 
+resources = better_glob('mrsdash', ("*.html", "*.css", "*.js", "*.ico"))
 
-print better_glob('mrsdash', ("*.html", "*.css", "*.js", "*.ico"))
+from pprint import pprint
+pprint(resources)
 
 setup(
     # long_description=__doc__,
@@ -42,9 +44,9 @@ setup(
     install_requires=install_requires,
     license='Apache License 2.0',
     name='mrsdash',
-    package_data={
-        'mrsdash': better_glob('mrsdash', ("*.html", "*.css", "*.js", "*.ico"))
-        },
+    # package_data={
+    #     'mrsdash': resources
+    #     },
     package_dir={
         'mrsdash': 'mrsdash'
         },
