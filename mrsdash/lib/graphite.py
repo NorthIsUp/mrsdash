@@ -1,8 +1,20 @@
-from urllib import quote
 from urllib import urlencode
 from mrsdash.lib.time_helpers import parse_time
 from mrsdash.lib.helpers import accepts
 from copy import deepcopy
+
+
+class Graphite(object):
+    """a way to interact with a graphite server"""
+    def __init__(self, name, host, port):
+        super(Graphite, self).__init__()
+        self.host = host
+        self.port = port
+
+    # use stats here for the rest
+    def graphite_mark(action="deploy"):
+        # send_graphite('%s.%s.%s 1 %d' % (action, env.name, env.host.split('.')[0], int(time.time()),))
+        pass
 
 
 class Series(str):
@@ -120,6 +132,7 @@ class Graph(object):
         elif len(args) == 2:
             config, time = args
             self._base_url = config['GRAPHITE_BASE_URL']
+            self._show_deploys = True
             self._deploys = config.get('GRAPHITE_DEPLOYS', [])
             self._hide_grid = False
             self._hide_legend = False
@@ -236,12 +249,20 @@ class Graph(object):
             self._series.append(series)
         return self
 
+    def add_hw_bands(self, series, *args):
+        self.show_deploys(False)
+        self.add_series(Series(series, ('timeShift', '-2w'), *args).alias("Last Week").line_width(0.5))
+        self.add_series(Series(series, *args).alias("This Week").line_width(0.5))
+        self.add_series(Series(series, ('holtWintersConfidenceBands'), *args).line_width(0.5))
+
+        # holtWintersForecast
+        self._time = '-2w'
+        return self
+
     # Include vertical deploy lines over any metrics included in the image.
     @accepts(bool, self=True)
     def show_deploys(self, show=True):
-        if show:
-            for deploy in self._deploys:
-                self.add_series(deploy)
+        self._show_deploys = show
         return self
 
      # Convert Dashboard time period to a value usable by Graphite URLs.
@@ -288,13 +309,17 @@ class Graph(object):
         if self._pie_chart:
             p['graphType'] = 'pie'
 
+        if self._show_deploys:
+            for deploy in self._deploys:
+                self.add_series(deploy)
+
         targets = []
         colors = []
 
         for m in self._series:
             targets.append('target=' + m['target'])  # shouldn't need to quote this
             if 'color' in m and m['color']:
-                colors.append(quote(m['color']))
+                colors.append(m['color'])
 
         fmt = {
             'base_url': self._base_url,

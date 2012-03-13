@@ -56,6 +56,8 @@ def display_time(time):
 
 def parse_time(time):
     time = str(time)
+    if time[0] == '-':
+        time = time[1:]
     if time[-1] == 's':
         time = time[:-1]
     m = match(r"(\d+)([a-z]+)", time.lower()).groups()
