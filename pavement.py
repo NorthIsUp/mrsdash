@@ -31,13 +31,14 @@ def publish(options):
     if not hasattr(options, 'module'):
         print "module is not an option, it is required"
 
-    # sh("python setup.py build")
+    sh("python setup.py install")
 
     VERSION = sh("python -c 'import pkg_resources; print pkg_resources.get_distribution(\"%s\").version'" % options.module, capture=True)
-    print VERSION
+    SHA = sh("git rev-parse HEAD", capture=True)
+    print VERSION, SHA
 
     print "creating tag " + VERSION
-    sh("git tag " + VERSION, ignore_error=True)
+    sh('git tag ' + VERSION, ignore_error=True)
 
     print "pushing tag"
     sh("git push origin " + VERSION)

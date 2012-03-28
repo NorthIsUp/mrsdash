@@ -95,10 +95,10 @@ class Deploy(Series):
         color = kwargs.get('color', 'blue')
         line_width = kwargs.get('line_width', 2)
 
-        self.alias(name)
         self.draw_as_infinite()
         self.line_width(line_width)
         self.color(color)
+        self.alias(name)
 
 
 class Graph(object):
@@ -131,26 +131,28 @@ class Graph(object):
             self.__init__(self.__class__._config, args[0])
         elif len(args) == 2:
             config, time = args
+            self._area_mode = None
             self._base_url = config['GRAPHITE_BASE_URL']
-            self._show_deploys = True
             self._deploys = config.get('GRAPHITE_DEPLOYS', [])
+            self._display_title = True
+            self._display_vtitle = False
             self._hide_grid = False
             self._hide_legend = False
             self._line_mode = None
             self._line_width = None
-            self._series = []
             self._pie_chart = False
+            self._series = []
+            self._show_deploys = True
+            self._span = 12
             self._stacked = False
+            self._template = None
+            self._threshold = []
             self._time = time
+            self._time_shift = None
             self._title = None
-            self._display_title = True
-            self._display_vtitle = False
             self._vtitle = None
             self._y_max = None
-            self._y_min = 0
-            self._time_shift = None
-            self._span = 12
-            self._threshold = []
+            self._y_min = None
         else:
             raise TypeError("__init__() takes either 1 or 2 arguments %d given" % len(args))
 
@@ -175,6 +177,11 @@ class Graph(object):
     @accepts(str, self=True)
     def set_time_shift(self, time):
         self._time_shift = time
+        return self
+
+    @accepts(str, self=True)
+    def template(self, template):
+        self._template = template
         return self
 
     @accepts(str, self=True)
@@ -225,6 +232,11 @@ class Graph(object):
     @accepts(bool, self=True)
     def display_pie_chart(self, display):
         self._pie_chart = bool(display)
+        return self
+
+    @accepts(str, self=True)
+    def area_mode(self, mode):
+        self._area_mode = mode
         return self
 
     # Set y_min to 'null' to unlock from zero
@@ -308,6 +320,12 @@ class Graph(object):
 
         if self._pie_chart:
             p['graphType'] = 'pie'
+
+        if self._area_mode:
+            p['areaMode'] = self._area_mode
+
+        if self._template:
+            p['template'] = self._template
 
         if self._show_deploys:
             for deploy in self._deploys:
