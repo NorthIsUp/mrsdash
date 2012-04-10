@@ -143,6 +143,7 @@ class Graph(object):
             self._pie_chart = False
             self._series = []
             self._show_deploys = True
+            self._show_deploys_in_legend = True
             self._span = 12
             self._stacked = False
             self._template = None
@@ -261,20 +262,25 @@ class Graph(object):
             self._series.append(series)
         return self
 
-    def add_hw_bands(self, series, *args):
+    def add_hw_bands(self, series, period='w', *args):
         self.show_deploys(False)
-        self.add_series(Series(series, ('timeShift', '-2w'), *args).alias("Last Week").line_width(0.5))
-        self.add_series(Series(series, *args).alias("This Week").line_width(0.5))
+        self.add_series(Series(series, ('timeShift', '-2%s' % period), *args).alias("Last %s" % period).line_width(0.5))
+        self.add_series(Series(series, *args).alias("This %s" % period).line_width(0.5))
         self.add_series(Series(series, ('holtWintersConfidenceBands'), *args).line_width(0.5))
 
         # holtWintersForecast
-        self._time = '-2w'
+        self._time = '-2%s' % period
         return self
 
     # Include vertical deploy lines over any metrics included in the image.
     @accepts(bool, self=True)
     def show_deploys(self, show=True):
         self._show_deploys = show
+        return self
+
+    @accepts(bool, self=True)
+    def show_deploys_in_legend(self, show=True):
+        self._show_deploys_in_legend = show
         return self
 
      # Convert Dashboard time period to a value usable by Graphite URLs.
@@ -329,7 +335,10 @@ class Graph(object):
 
         if self._show_deploys:
             for deploy in self._deploys:
-                self.add_series(deploy)
+                d = Series(deploy)
+                if not self._show_deploys_in_legend:
+                    d.alias('')
+                self.add_series(d)
 
         targets = []
         colors = []
