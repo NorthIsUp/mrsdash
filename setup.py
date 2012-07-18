@@ -15,7 +15,7 @@ def better_glob(dir, patterns):
                 matches.append(os.path.join(root[len(dir) + 1:], filename))
     return matches
 
-__version__ = '0.1.17'
+__version__ = '0.1.19'
 
 tests_require = [
     'nose',
