@@ -303,7 +303,7 @@ class Graph(object):
             p['vtitle'] = self._vtitle
             p['hideaxes'] = 'false'
 
-        # if self._hide_legend and not stand_alone:
+        if self._hide_legend and not stand_alone:
             p['hideLegend'] = self._hide_legend
 
         if self._hide_grid:

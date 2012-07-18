@@ -1,5 +1,4 @@
 from disqus.flask import create_app
-from greplin.scales.flaskhandler import registerStatsHandler
 from path import path
 import logging
 
